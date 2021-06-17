@@ -2,9 +2,9 @@ import React from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator, ScrollView, FlatList } from 'react-native'
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 
-import Baseball from './sportHomeScreens/Baseball'
 
-const SportSelector = (props) => {
+
+const SportSelector = props => {
 
     let isActive = ''
     let sportSelectorIcons = [
@@ -23,7 +23,7 @@ const SportSelector = (props) => {
              { sportSelectorIcons }
         </ScrollView>
 
-        <Baseball />
+        {/* <Baseball /> */}
         </>
     )
 }
