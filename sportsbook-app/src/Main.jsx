@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 
-
-import Team from './components/Team'
-import SportSelector from './components/SportSelector'
+import { Game, GameList, SportSelector, Team } from './components/Exports'
 
 export default class Main extends Component {
 
@@ -32,8 +30,6 @@ export default class Main extends Component {
             .catch(err => {
                 console.log("There was an error", err)
             })
-
-
     }
 
     componentDidMount() {
@@ -41,16 +37,16 @@ export default class Main extends Component {
     }
 
     render() {
-
-        
         return (
             <>
-            <View>
-                {this.state.teamData.map((teamObj) => { return (<Team team={teamObj} key={teamObj.team} />)})}
-            </View>
-            <View>
-                <SportSelector />
-            </View>
+                <View>
+                    {this.state.teamData.map((teamObj) => { 
+                        return (<Team team={teamObj} key={teamObj.team} />)
+                    })}
+                </View>
+                <View>
+                    <SportSelector />
+                </View>
             </>
         )
     }
@@ -60,12 +56,5 @@ const styles = StyleSheet.create({
 
     redText: {
         color: '#ed1532'
-    },
-    // viewContainer: {
-    //     flex: 1,
-    //     backgroundColor: '#333',
-    //     color: '#ffffff',
-    //     height: "20%",
-    //     // alignContent: center
-    // }
+    }
 });
