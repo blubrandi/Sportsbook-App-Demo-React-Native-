@@ -8,18 +8,18 @@ const SportSelector = props => {
 
     let isActive = ''
     let sportSelectorIcons = [
-        <Ionicons name="baseball-outline" size={58} color="#fff" />,
-        <FontAwesome5 name="football-ball" size={48} color="#fff" />,
-        <Ionicons name="football-outline" size={58} color="#fff" />,
-        <FontAwesome5 name="basketball-ball" size={48} color="#fff" />,
-        <FontAwesome5 name="golf-ball" size={48} color="#fff" />,
-        <Ionicons name="tennisball-outline" size={58} color="#fff" />,
-        <FontAwesome5 name="horse-head" size={48} color="#fff" />,
+        <Ionicons style={styles.icon} name="baseball-outline" size={48} color="#fff" />,
+        <FontAwesome5 style={styles.icon} name="football-ball" size={38} color="#fff" />,
+        <Ionicons style={styles.icon} name="football-outline" size={48} color="#fff" />,
+        <FontAwesome5 style={styles.icon} name="basketball-ball" size={38} color="#fff" />,
+        <FontAwesome5 style={styles.icon} name="golf-ball" size={38} color="#fff" />,
+        <Ionicons style={styles.icon} name="tennisball-outline" size={48} color="#fff" />,
+        <FontAwesome5 style={styles.icon} name="horse-head" size={38} color="#fff" />,
     ]
 
     return (
         <>
-        <ScrollView style={styles.sportSelectContainer} horizontal={true}>
+        <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
              { sportSelectorIcons }
         </ScrollView>
 
@@ -32,12 +32,17 @@ export default SportSelector
 
 const styles = StyleSheet.create({
     sportSelectContainer: {
+        flexGrow: 1,
         backgroundColor: '#161616',
-        // flexDirection: 'row',
-        // justifyContent: 'space-around',
-        // alignItems: 'center',
-        paddingVertical: 40,
-
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingTop: 20,
+        paddingBottom: 40,
+        paddingHorizontal: 50,
+    },
+    icon: {
+        padding: 12,
     }
+
 })
 
