@@ -1,10 +1,13 @@
 import React from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator, ScrollView, FlatList } from 'react-native'
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
+import { event } from 'react-native-reanimated'
 
 
 
 const SportSelector = props => {
+
+    const handleIconTap = (value) => {alert(value)}
 
     let isActive = ''
     let sportSelectorIcons = [
@@ -20,7 +23,12 @@ const SportSelector = props => {
     return (
         <>
         <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
-             { sportSelectorIcons }
+             {/* { sportSelectorIcons } */}
+
+             { sportSelectorIcons.map((icon) => {
+                 return (<Button title="gi"></Button>)
+             })}
+
         </ScrollView>
 
         {/* <Baseball /> */}

@@ -41,7 +41,7 @@ export default class Main extends Component {
             <>
                 <View>
                     {this.state.teamData.map((teamObj) => { 
-                        // return (<Team team={teamObj} key={teamObj.team} />)
+                        return (<Team team={teamObj} key={teamObj.team} />)
                     })}
                 </View>
                 <View style={styles.darkGrayBackground}>
