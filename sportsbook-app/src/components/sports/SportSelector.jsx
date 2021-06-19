@@ -20,18 +20,20 @@ const SportSelector = props => {
         <FontAwesome5 style={styles.icon} name="horse-head" size={38} color="#fff" />,
     ]
 
+    const baseBallLeagues = [
+        "MLB",
+        "MiLB",
+        "National League",
+        "American League"
+    ]
+
     return (
         <>
         <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
-             {/* { sportSelectorIcons } */}
-
-             { sportSelectorIcons.map((icon) => {
-                 return (<Button title="gi"></Button>)
-             })}
+             { sportSelectorIcons }
 
         </ScrollView>
 
-        {/* <Baseball /> */}
         </>
     )
 }
@@ -50,6 +52,10 @@ const styles = StyleSheet.create({
     },
     icon: {
         padding: 12,
+    },
+    leagueNames: {
+        color: '#fff',
+        backgroundColor: 'red'
     }
 
 })
