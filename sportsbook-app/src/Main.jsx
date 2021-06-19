@@ -1,52 +1,68 @@
 import React, { Component } from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 import axios from 'axios'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import { Game, GameList, SportSelector, Team } from './components/Exports'
+import Header from './components/Header'
+import { Game, GameList, SportSelector, Team, HomeScreen } from './components/Exports'
+
+function HomeScreenTab() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {/* <SportSelector /> */}
+        <HomeScreen />
+      </View>
+    );
+  }
+  
+  function ProfileScreenTab() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Profile</Text>
+      </View>
+    );
+  }
+
+  function RewardsScreenTab() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Rewards</Text>
+      </View>
+    );
+  }
+
+  function BetslipScreenTab() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Betslip</Text>
+      </View>
+    );
+  }
+  
+  const Tab = createBottomTabNavigator();
+
 
 export default class Main extends Component {
 
     constructor(props) {
         super(props)
 
-        this.state = {
-            teamData: [],
-            teamNames: []
-        }
-    }
-
-    getTeamData = async () => {
-        const headers = {
-            'Ocp-Apim-Subscription-Key': 'df194af6ada54af983b9667771d8aa72'
-        }
-
-        await axios.get("https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/%7B2021%7D?key=df194af6ada54af983b9667771d8aa72")
-            .then(res => {
-                res.data
-
-                const teamData = res.data
-                this.setState({ teamData: teamData })
-            })
-            .catch(err => {
-                console.log("There was an error", err)
-            })
-    }
-
-    componentDidMount() {
-        this.getTeamData()
     }
 
     render() {
         return (
             <>
-                {/* <View>
-                    {this.state.teamData.map((teamObj) => { 
-                        return (<Team team={teamObj} key={teamObj.team} />)
-                    })}
-                </View> */}
-                <View style={styles.darkGrayBackground}>
-                    <SportSelector />
-                </View>
+                <Header />
+
+               <NavigationContainer>
+                    <Tab.Navigator>
+                        <Tab.Screen name="Home" component={HomeScreenTab} />
+                        <Tab.Screen name="Profile" component={ProfileScreenTab} />
+                        <Tab.Screen name="Rewards" component={RewardsScreenTab} />
+                        <Tab.Screen name="Betslip" component={BetslipScreenTab} />
+                    </Tab.Navigator>
+                </NavigationContainer>
             </>
         )
     }
@@ -57,7 +73,7 @@ const styles = StyleSheet.create({
     redText: {
         color: '#ed1532'
     },
-    darkGrayBackground: {
+    darkGreyBackground: {
         backgroundColor: '#161616',
     }
 
