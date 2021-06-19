@@ -44,7 +44,7 @@ export default class Main extends Component {
                         return (<Team team={teamObj} key={teamObj.team} />)
                     })}
                 </View>
-                <View>
+                <View style={styles.darkGrayBackground}>
                     <SportSelector />
                 </View>
             </>
@@ -56,5 +56,9 @@ const styles = StyleSheet.create({
 
     redText: {
         color: '#ed1532'
+    },
+    darkGrayBackground: {
+        backgroundColor: '#161616',
     }
+
 });
