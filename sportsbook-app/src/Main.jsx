@@ -39,11 +39,11 @@ export default class Main extends Component {
     render() {
         return (
             <>
-                <View>
+                {/* <View>
                     {this.state.teamData.map((teamObj) => { 
                         return (<Team team={teamObj} key={teamObj.team} />)
                     })}
-                </View>
+                </View> */}
                 <View style={styles.darkGrayBackground}>
                     <SportSelector />
                 </View>
