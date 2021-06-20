@@ -6,6 +6,25 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator()
 
+const CustomTabBarButton = ({children, onPress}) => (
+    <TouchableOpacity
+    style={{
+        top: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }}
+    onPress={onPress}>
+        <View style={{
+            width: 60,
+            height: 60,
+            borderRadius: 50,
+            backgroundColor: '#4cfa07'
+        }}>
+            {children}
+        </View>
+    </TouchableOpacity>
+)
+
 const Tabs = () => {
 
     return (
@@ -37,6 +56,45 @@ const Tabs = () => {
                      </View>
                 )  
             }}/>
+                        <Tab.Screen name="Favorites" component={FavoritesScreen} options={{
+                tabBarIcon: ({focused}) => (
+                    <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
+                    <Text>
+                        <Ionicons name='star' size={28} color='#fff' />
+                    </Text>
+                    <Text style={styles.whiteText}>
+                        Favorites
+                    </Text>
+                    </View>
+                )
+            }}/>         
+            <Tab.Screen name="Betslip" component={BetslipScreen} options={{
+                tabBarIcon: ({focused}) => (
+                    <Text>
+                        <Ionicons name='receipt' size={40} color='#161616' />
+                    </Text>
+    
+                ),
+                tabBarButton: (props) => (
+                    <CustomTabBarButton {...props} />
+                )   
+
+                // tabBarIcon: 
+            }}/>
+
+                <Tab.Screen name="Rewards" component={RewardsScreen} options={{
+                tabBarIcon: ({focused}) => (
+                    <View style={{alignItems :'center', justifyContent: 'center', top: 10}}>
+                    <Text>
+                        <Ionicons name='ribbon' size={28} color='#fff' />
+                    </Text>
+                    <Text style={styles.whiteText}>
+                        Rewards
+                    </Text>
+                    </View>
+                )   
+            }}/>
+
             <Tab.Screen name="Profile" component={ProfileScreen} options={{
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
@@ -49,42 +107,7 @@ const Tabs = () => {
                     </View>
                 )
             }}/>
-            <Tab.Screen name="Rewards" component={RewardsScreen} options={{
-                tabBarIcon: ({focused}) => (
-                    <View style={{alignItems :'center', justifyContent: 'center', top: 10}}>
-                    <Text>
-                        <Ionicons name='ribbon' size={28} color='#fff' />
-                    </Text>
-                    <Text style={styles.whiteText}>
-                        Rewards
-                    </Text>
-                    </View>
-                )   
-            }}/>
-            <Tab.Screen name="Betslip" component={BetslipScreen} options={{
-                tabBarIcon: ({focused}) => (
-                    <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
-                    <Text>
-                        <Ionicons name='receipt' size={28} color='#fff' />
-                    </Text>
-                    <Text style={styles.whiteText}>
-                        Betslip
-                    </Text>
-                    </View>
-                )   
-            }}/>
-            <Tab.Screen name="Favorites" component={FavoritesScreen} options={{
-                tabBarIcon: ({focused}) => (
-                    <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
-                    <Text>
-                        <Ionicons name='star' size={28} color='#fff' />
-                    </Text>
-                    <Text style={styles.whiteText}>
-                        Favorites
-                    </Text>
-                    </View>
-                )
-            }}/>
+
         </Tab.Navigator>
 
     )

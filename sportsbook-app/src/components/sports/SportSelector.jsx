@@ -1,19 +1,12 @@
-import React from 'react'
-import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator, ScrollView, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 
-const SportSelector = props => {
+const SportSelector = () => {
 
-    let sportSelectorIcons = [
-        <Ionicons style={styles.icon} name="baseball-outline" key={"baseball"} size={48} color="#fff" />,
-        <FontAwesome5 style={styles.icon} name="football-ball" key={"football"} size={38} color="#fff" />,
-        <Ionicons style={styles.icon} name="football-outline" key={"soccer"} size={48} color="#fff" />,
-        <FontAwesome5 style={styles.icon} name="basketball-ball" key={"basketball"} size={38} color="#fff" />,
-        <FontAwesome5 style={styles.icon} name="golf-ball" key={"golf"} size={38} color="#fff" />,
-        <Ionicons style={styles.icon} name="tennisball-outline" key={"tennis"} size={48} color="#fff" />,
-        <FontAwesome5 style={styles.icon} name="horse-head" key={"horse"} size={38} color="#fff" />,
-    ]
+    const [selectedSport, setSelectedSport] = useState('')
+    const [selectedLeague, setSelectedLeague] = useState('')
 
     const baseBallLeagues = [
         "MLB",
@@ -22,19 +15,75 @@ const SportSelector = props => {
         "American League"
     ]
 
+    const showLeagues = (props) => {
+        setSelectedSport(props)
+    }
+
+    const selectLeague = (props) => {
+        setSelectedLeague(props)
+    }
+
     return (
         <>
         <View>
             <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
-                { sportSelectorIcons }
-                {/* <Ionicons style={styles.icon} name="baseball-outline" key={"baseball"} size={48} color="#fff" />
-                <FontAwesome5 style={styles.icon} name="football-ball" key={"football"} size={38} color="#fff" />
-                <Ionicons style={styles.icon} name="football-outline" key={"soccer"} size={48} color="#fff" />
-                <FontAwesome5 style={styles.icon} name="basketball-ball" key={"basketball"} size={38} color="#fff" />
-                <FontAwesome5 style={styles.icon} name="golf-ball" key={"golf"} size={38} color="#fff" />
-                <Ionicons style={styles.icon} name="tennisball-outline" key={"tennis"} size={48} color="#fff" />
-                <FontAwesome5 style={styles.icon} name="horse-head" key={"horse"} size={38} color="#fff" /> */}
+                
+                <TouchableOpacity onPress={() => showLeagues("baseball")}>
+                    <Ionicons style={styles.icon} name="baseball-outline" key={"baseball"} size={48} color="#fff"  />            
+                 </TouchableOpacity>
+                 
+                 <TouchableOpacity onPress={() => showLeagues("football")}>
+                 <FontAwesome5 style={styles.icon} name="football-ball" key={"football"} size={38} color="#fff" />            
+                 </TouchableOpacity>
+                
+                 <TouchableOpacity onPress={() => showLeagues("soccer")}>
+                 <Ionicons style={styles.icon} name="football-outline" key={"soccer"} size={48} color="#fff" />           
+                 </TouchableOpacity>
+                 
+                 <TouchableOpacity onPress={() => showLeagues("basketball")}>
+                 <FontAwesome5 style={styles.icon} name="basketball-ball" key={"basketball"} size={38} color="#fff" />    
+                 </TouchableOpacity>
+                
+                 <TouchableOpacity onPress={() => showLeagues("golf")}>
+                    <FontAwesome5 style={styles.icon} name="golf-ball" key={"golf"} size={38} color="#fff" />           
+                 </TouchableOpacity>
+                 
+                 <TouchableOpacity onPress={() => showLeagues("tennis")}>
+                    <Ionicons style={styles.icon} name="tennisball-outline" key={"tennis"} size={48} color="#fff" />               
+                 </TouchableOpacity>
+
+                 <TouchableOpacity onPress={() => showLeagues("horse")}>
+                    <FontAwesome5 style={styles.icon} name="horse-head" key={"horse"} size={38} color="#fff" />           
+                 </TouchableOpacity>
             </ScrollView>
+            <View style={styles.leagueNames}>
+                {selectedSport == "baseball" &&
+                    baseBallLeagues.map((baseballLeague) => {
+                        return(
+                           <TouchableOpacity onPress={() => selectLeague(baseballLeague)}><Text>{baseballLeague}</Text></TouchableOpacity>
+                        )
+                    })
+                }
+                {selectedSport == "football" &&
+                <Text>football</Text>
+                }
+                {selectedSport == "soccer" &&
+                <Text>soccer</Text>
+                }
+                {selectedSport == "basketball" &&
+                <Text>basketball</Text>
+                }
+                {selectedSport == "golf" &&
+                <Text>golf</Text>
+                }
+                {selectedSport == "tennis" &&
+                <Text>tennis</Text>
+                }
+                {selectedSport == "horse" &&
+                <Text>horse</Text>
+                }
+                
+            </View>
         </View>
         </>
     )
@@ -50,15 +99,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // paddingTop: 20,
         // paddingBottom: 40,
-        paddingHorizontal: 50,
+        paddingHorizontal: 100,
         height: 90
     },
     icon: {
-        padding: 12,
+        padding: 0,
     },
     leagueNames: {
         color: '#fff',
-        backgroundColor: 'red'
+        backgroundColor: '#555',
+        height: 40,
     }
 
 })
