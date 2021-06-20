@@ -24,15 +24,18 @@ const SportSelector = props => {
 
     return (
         <>
-        <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
-            <Ionicons style={styles.icon} name="baseball-outline" key={"baseball"} size={48} color="#fff" />
-            <FontAwesome5 style={styles.icon} name="football-ball" key={"football"} size={38} color="#fff" />
-            <Ionicons style={styles.icon} name="football-outline" key={"soccer"} size={48} color="#fff" />
-            <FontAwesome5 style={styles.icon} name="basketball-ball" key={"basketball"} size={38} color="#fff" />
-            <FontAwesome5 style={styles.icon} name="golf-ball" key={"golf"} size={38} color="#fff" />
-            <Ionicons style={styles.icon} name="tennisball-outline" key={"tennis"} size={48} color="#fff" />
-            <FontAwesome5 style={styles.icon} name="horse-head" key={"horse"} size={38} color="#fff" />
-        </ScrollView>
+        <View>
+            <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
+                { sportSelectorIcons }
+                {/* <Ionicons style={styles.icon} name="baseball-outline" key={"baseball"} size={48} color="#fff" />
+                <FontAwesome5 style={styles.icon} name="football-ball" key={"football"} size={38} color="#fff" />
+                <Ionicons style={styles.icon} name="football-outline" key={"soccer"} size={48} color="#fff" />
+                <FontAwesome5 style={styles.icon} name="basketball-ball" key={"basketball"} size={38} color="#fff" />
+                <FontAwesome5 style={styles.icon} name="golf-ball" key={"golf"} size={38} color="#fff" />
+                <Ionicons style={styles.icon} name="tennisball-outline" key={"tennis"} size={48} color="#fff" />
+                <FontAwesome5 style={styles.icon} name="horse-head" key={"horse"} size={38} color="#fff" /> */}
+            </ScrollView>
+        </View>
         </>
     )
 }
@@ -45,9 +48,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#161616',
         justifyContent: 'space-around',
         alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 40,
+        // paddingTop: 20,
+        // paddingBottom: 40,
         paddingHorizontal: 50,
+        height: 90
     },
     icon: {
         padding: 12,

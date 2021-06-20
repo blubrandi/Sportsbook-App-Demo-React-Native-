@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { default as Team } from \"./Team\";","map":{"version":3,"sources":["/Users/brandi/Documents/Code_Stuff/NGT/sportsbook-app-demo/sportsbook-app/src/components/teams/index.jsx"],"names":["default","Team"],"mappings":"AAAA,SAASA,OAAO,IAAIC,IAApB","sourcesContent":["export { default as Team } from './Team'"]},"metadata":{},"sourceType":"module"}

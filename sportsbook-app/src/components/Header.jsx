@@ -1,12 +1,20 @@
 import React from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const Header = (props) => {
 
     return (
-        <View style={styles.viewStyle}>
-            <Text style={styles.whiteText}>Header</Text>
+        <View>
+            <LinearGradient 
+            colors={['#161616', '#2D2A2A']}
+            start={[0, 1]}
+            end={[1, 0]}
+            style={styles.viewStyle}
+            >
+                <Text style={styles.whiteText}>Header</Text>
+            </LinearGradient>
         </View>
     )
 }
@@ -17,7 +25,7 @@ const styles = StyleSheet.create({
     viewStyle: {
     backgroundColor: '#161616',
     paddingTop: 40,
-    height: 120
+    height: 110
     }, 
     whiteText: {
         color: '#fff'

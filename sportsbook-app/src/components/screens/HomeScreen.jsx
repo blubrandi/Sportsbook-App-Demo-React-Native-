@@ -1,6 +1,7 @@
 import  React, { Component } from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 
+// import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons'
 import axios from 'axios'
 
 import { Team, SportSelector } from '../Exports'
@@ -50,7 +51,6 @@ export default class HomeScreen extends Component {
         )
     }
 }
-
 
 
 
