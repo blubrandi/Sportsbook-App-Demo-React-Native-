@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
 import { element } from 'prop-types'
 
 import GameList from '../games/GameList'
+import { HomeScreen } from '../screens'
 
 const SportSelector = () => {
 
@@ -126,7 +127,7 @@ const SportSelector = () => {
             <ScrollView contentContainerStyle={styles.sportSelectContainer} horizontal={true}>
                 
                  {sportIcons}
-                 
+                
             </ScrollView>
             <ScrollView contentContainerStyle={styles.leagueSelectContainer} horizontal={true}>
                 {selectedSport == "baseball" &&

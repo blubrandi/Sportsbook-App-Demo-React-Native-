@@ -1,9 +1,14 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
 
 const ProfileScreen = () => {
     return (
-        <Text>Profile Screen</Text>
+        <ScrollView>
+            <Text>Preferences</Text>
+            <Text>Wallet</Text>
+            <Text>Profile</Text>
+
+        </ScrollView>
     )
 }
 
