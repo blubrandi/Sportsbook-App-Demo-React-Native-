@@ -67,8 +67,20 @@ export default class HomeScreen extends Component {
 
     render() {
         return (
-            <>
+            <View style={{backgroundColor: 'hotpink'}}>
                 <SportSelector />
+                <View style={{backgroundColor: 'hotpink', flex: 1}}>
+                    <Text>Come the fuck on already.</Text>
+                </View>
+                <View style={{backgroundColor: 'hotpink', flex: 1}}>
+                    <Text>Come the fuck on already.</Text>
+                </View>
+                <View style={{backgroundColor: 'hotpink', flex: 1}}>
+                    <Text>Come the fuck on already.</Text>
+                </View>
+                <View style={{backgroundColor: 'hotpink', flex: 1}}>
+                    <Text>Come the fuck on already.</Text>
+                </View>
                 {/* <View style={styles.gameList}>
                     {this.state.scheduleData.map(scheduleObj => {
                         return (
@@ -76,7 +88,7 @@ export default class HomeScreen extends Component {
                         )
                     })}
                 </View> */}
-            </>
+            </View>
         )
     }
 }

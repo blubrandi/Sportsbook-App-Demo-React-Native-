@@ -1,36 +1,48 @@
-import React, { useEffect, useState, useInterval, Component } from 'react'
+import React, { useEffect, setState, useState, useInterval, Component } from 'react'
 import axios from 'axios'
-import { Image, StyleSheet, ScrollView, TouchableOpacity, Text, View } from 'react-native'
+import { Button, Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
+import Modal from "react-native-modal";
+
+import Bet from '../bets/Bet'
+import { nanoid } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
+
+import { pendingBetAdded } from '../bets/betsSlice' 
+import PendingBetslip from '../bets/PendingBetslip'
+import { render } from 'react-dom'
 
 // import * as All from '../../assets/team-logos'
 
 // import Game from './Game '
 
-class GameList extends Component {
+const GameList = (props) => {
 
-    constructor(props) {
-        super(props)
+    const dispatch = useDispatch()
 
-        this.state = {
-            scheduleData: [],
-            homeTeams: [],
-            selectedLeague: this.props.selectedLeague,
-            isLoading: true,
-            shortTeamName: "CHC",
-            // imgURL: 
-        }
-    }
+    const [scheduleData, setScheduleData] = useState([])
+    const [homeTeams, setHomeTeams] = useState([])
+    const [selectedLeague, setSelectedLeage] = useState(props.selectedLeague)
+    const [isLoading, setIsLoading] = useState(true)
+
+    const [showModal, setShowModal] = useState(false)
+
+    useEffect(() => {
+        getSchedules()
+      }, [])
+
+      const toggleModal = () => {
+        setShowModal(!showModal)
+      }
 
    getSchedules = async () => {
-        await axios.get('https://fly.sportsdata.io/v3/mlb/odds/json/BettingEventsByDate/2021-07-04?key=df194af6ada54af983b9667771d8aa72')
+        await axios.get('https://fly.sportsdata.io/v3/mlb/odds/json/AlternateMarketGameOddsByDate/2021-07-05?key=df194af6ada54af983b9667771d8aa72')
         .then(res => {
 
             res.data
 
-            const scheduleData = res.data
-            this.setState({ scheduleData: scheduleData })
-            this.setState({ isLoading: false})
-            console.log(schedules)
+            setScheduleData(res.data)
+            setIsLoading(false)
+            console.log(scheduleData)
         })
         .catch(err => console.log("Error getting schedules: ", err))
     }
@@ -111,7 +123,7 @@ class GameList extends Component {
         console.log(teamName)
     } 
 
-    formatTeamName(teamName) {
+    formatTeamName = (teamName) => {
 
         switch (teamName) {
             case 'ARI':
@@ -180,66 +192,171 @@ class GameList extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log(this.selectedLeague)
-        this.getSchedules()
+    getNanoID = () => {
+        return nanoid(6)
     }
 
-    render() {
+    createMoneyLine = (props) => {
+
+        // console.log("PROPS: ", props)
+
+        let gameID = props.GameId
+        
+        let betID = nanoid(6)
+        let awayTeamName = formatTeamName(props.AwayTeamName)
+        let homeTeamName = formatTeamName(props.HomeTeamName)
+        let betType = 'moneyLine'
+        let homeMoneyLine = props.AlternateMarketPregameOdds[0].HomeMoneyLine
+        let awayMoneyLine = props.AlternateMarketPregameOdds[0].AwayMoneyLine
+        // // let homePointSpread = props.homePointSpread
+        // // let awayPointSpread = props.awayPointSpread
+        // // let homePointSpreadPayout = props.homePointSpreadPayout
+        // // let awayPointSpreadPayout = props.awayPointSpreadPayout
+        // // let overUnder = props.overUnder
+        // // let overPayout = props.overPayout
+        // // let underPayout = props.underPayout
+        // let wager = props.wager
+        // let potentialWinnings = props.potentialWinnings
+        // let potentialPayout = props.potentialPayout
+
+        // let y = 20
+        // let a = (y * Math.abs(props/100)) + y
+        
+        // console.log("Bet: ", y, "Profit: ", Math.round(a - y), "Payout: ", a)
+        // console.log(props)
+
+        let newBet = Bet({gameID, betID, betType, homeMoneyLine, awayMoneyLine, awayTeamName, homeTeamName})
+        // console.log("NEW BET: ", newBet)
+        // console.log("From function: ", props.scheduleObj)
+
+        dispatch(pendingBetAdded(newBet))
+        toggleModal()
+        // dispatch(setShowModal(true))
+
+        return newBet
+    }
+
+    hideModal = () => {
+        setShowModal(false)
+    }
         return(
             <>
-                    {this.state.selectedLeague == "MLB" && 
-                        this.state.isLoading ?
+                    {selectedLeague == "MLB" && 
+                        isLoading ?
                             <Text>Generating Game Data...</Text> :
-                            <ScrollView>
+                                <>
+                            {showModal ?
+                                // <View style={{backgroundColor: 'khaki'}}> 
+                                <Modal
+                                // animationIn={'slideInUp'}
+                                backdropOpacity={0}
+                                // animationInTiming={600}
+                                backdropTransitionInTiming={0}
+                                // hasBackdrop={false}
+                                style={{borderRadius: '10 10 0 0',justifyContent: 'flex-end',
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 6,
+                                },
+                                shadowOpacity: 0.39,
+                                shadowRadius: 8.30,
+                                
+                                elevation: 13,}}
+                                    isVisible={showModal}
+                                    
+                                    // coverScreen={false}
+                                    // propagateSwipe
+                                    onBackdropPress={() => {
+                                        setShowModal(false)
+                                    }}
+                                    onRequestClose={() => {
+                                        Alert.alert('Modal has been closed.');
+                                    }}>
+                                        <View style={{backgroundColor: '#161616', height: '60%', borderRadius: 24, justifyContent: 'flex-end'}}>
+                                <ScrollView contentContainerStyle={styles.modalScrollView}>
+                                    <View style={{}}>
+                                <PendingBetslip />
+                                </View>
+                                </ScrollView>
+                                <Button title={'Press Me'}>Press Me</Button>
+                                </View>
+                                </Modal> 
+                                // </View>
+                             :
+                                <ScrollView>
                                 <View style={styles.gameList}>
-                                    {this.state.scheduleData.map(scheduleObj => {
-                                        return (
-                                            <TouchableOpacity style={styles.gameListItem}>
+                                {scheduleData.map((scheduleObj) => {
+                                    return (
+                                        <View style={styles.gameListItem}>
+                                            
+                                            <View style={styles.gameListItemRow}>
+                                                <Text style={styles.tealText}>{formatDate(scheduleObj.DateTime)}</Text>
+                                                <Text style={styles.lightText}>{scheduleObj.Name}</Text>
+                                            </View>
 
-                                                <View style={styles.gameListItemRow}>
-                                                    <Text style={styles.tealText}>{this.formatDate(scheduleObj.StartDate)}</Text>
-                                                    <Text style={styles.lightText}>{scheduleObj.Name}</Text>
-                                                </View>
+                                            <View style={styles.gameListItemRow}>
+                                            <View style={styles.teamInfo}>
+                                            <Image style={styles.gameListTeamLogo} source={imageSelect(scheduleObj.AwayTeamName)}></Image>
+                                            {/* <Text style={styles.lightText}>{this.formatTeamName(scheduleObj.HomeTeam)}</Text> */}
+                                            </View>
+                                            <View style={styles.betInfo}>
+                                                <View style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpread}</Text>
+                                                    </View>
+                                                <TouchableOpacity onPress={() => createMoneyLine(scheduleObj)} style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayMoneyLine}</Text>
+                                                    </TouchableOpacity>
+                                                <View style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpreadPayout}</Text>
+                                                    </View>
+                                            </View>
+                                            </View>
 
-                                                <View style={styles.gameListItemRow}>
-                                                <View style={styles.teamInfo}>
-                                                <Image style={styles.gameListTeamLogo} source={this.imageSelect(scheduleObj.AwayTeam)}></Image>
-                                                {/* <Text style={styles.lightText}>{this.formatTeamName(scheduleObj.HomeTeam)}</Text> */}
-                                                </View>
-                                                <View style={styles.betInfo}>
-                                                    <View style={styles.betBox}></View>
-                                                    <View style={styles.betBox}></View>
-                                                    <View style={styles.betBox}></View>
-                                                </View>
-                                                </View>
+                                            <View style={styles.gameListItemRow}>
+                                            <View style={styles.teamInfo}>
+                                            <Image style={styles.gameListTeamLogo} source={imageSelect(scheduleObj.HomeTeamName)}></Image>
+                                            {/* <Text style={styles.lightText}>{this.formatTeamName(scheduleObj.AwayTeam)}</Text> */}
+                                            </View>
+                                            <View style={styles.betInfo}>
+                                                <View style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpread}</Text>
+                                                    </View>
+                                                <TouchableOpacity onPress={() => createMoneyLine(scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine)} style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine}</Text>
+                                                    </TouchableOpacity>
+                                                <View style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpreadPayout}</Text>
+                                                    </View>
+                                            </View>
+                                            </View>
+                                        </View>
+                                        )
+                                    }).reverse()
+                                }
+                                </View> 
 
-                                                <View style={styles.gameListItemRow}>
-                                                <View style={styles.teamInfo}>
-                                                <Image style={styles.gameListTeamLogo} source={this.imageSelect(scheduleObj.HomeTeam)}></Image>
-                                                {/* <Text style={styles.lightText}>{this.formatTeamName(scheduleObj.AwayTeam)}</Text> */}
-                                                </View>
-                                                <View style={styles.betInfo}>
-                                                    <View style={styles.betBox}></View>
-                                                    <View style={styles.betBox}></View>
-                                                    <View style={styles.betBox}></View>
-                                                </View>
-                                                </View>
-                                            </TouchableOpacity>
-                                            )
-                                        }).reverse()
-                                    }
-                                    </View> 
-                                </ScrollView>  
-                    }         
+                            </ScrollView>
+
+                            
+                            }
+                              </>  
+
+                        }
+
             </> 
         )     
-    }
 }
 
 export default GameList
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 25,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
     gameList: {
         flexGrow: 1,
         backgroundColor: '#161616',
@@ -247,14 +364,13 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingBottom: 300
     },
-
     gameListTeamLogo: {
         height: 82,
         width: 82
     },
     lightText: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 14
     }, 
     gameListItem: {
         flexDirection: 'column',
@@ -282,13 +398,36 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     betBox: {
-        width: 50,
-        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 60,
+        height: 60,
         backgroundColor: '#262626',
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         borderRadius: 4
     },
     tealText: {
         color: 'teal'
-    }
+    },
+    modalScrollView: {
+        // flexGrow: 1,
+        backgroundColor: '#262626',
+        borderRadius: 18,
+        // justifyContent: 'space-around',
+        // alignItems: 'center',
+        color: '#fff',
+        fontSize: 24,
+        padding: 20,
+        width: '100%'
+
+    },
 })
+
+// const mapStateToProps = ({ pendingBetAdded }) => ({
+//     pendingBetAdded
+//   });
+  
+//   export default connect(
+//     mapStateToProps,
+//     { pendingBetAdded }
+//   )(GameList);

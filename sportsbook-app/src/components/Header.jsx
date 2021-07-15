@@ -2,10 +2,13 @@ import React from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { SportSelector } from './sports';
+
 
 const Header = (props) => {
 
     return (
+        <>
         <View>
             <LinearGradient 
             colors={['#161616', '#2D2A2A']}
@@ -16,6 +19,8 @@ const Header = (props) => {
                 <Text style={styles.whiteText}>Header</Text>
             </LinearGradient>
         </View>
+        
+        </>
     )
 }
 
