@@ -133,7 +133,7 @@ const SportSelector = () => {
                 {selectedSport == "baseball" &&
                     baseBallLeagues.map((baseballLeague) => {
                         return(
-                            <View style={styles.leagueSelectContainer}>
+                            <View style={styles.leagueSelectContainer} key={baseballLeague}>
                                 <TouchableOpacity onPress={() => selectLeague(baseballLeague)}><Text style={styles.leagueNames}>{baseballLeague}</Text></TouchableOpacity>
                            </View>
                         )

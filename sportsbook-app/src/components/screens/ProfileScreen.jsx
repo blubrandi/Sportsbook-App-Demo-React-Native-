@@ -3,13 +3,18 @@ import { Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View 
 
 const ProfileScreen = () => {
     return (
-        <ScrollView>
-            <Text>Preferences</Text>
-            <Text>Wallet</Text>
-            <Text>Profile</Text>
+        <View style={styles.viewStyle}>
+            <View></View>
 
-        </ScrollView>
+        </View>
     )
 }
 
 export default ProfileScreen
+
+const styles = StyleSheet.create({
+    viewStyle: {
+    backgroundColor: '#161616',
+    flex: 1, 
+    }
+})

@@ -1,97 +1,71 @@
-import  React, { Component } from 'react'
-import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
-
+import  React, { useEffect, useState } from 'react'
+import { Image, SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 // import { Ionicons, FontAwesome5, FontAwesome } from '@expo/vector-icons'
 import axios from 'axios'
 
 import { Team, SportSelector } from '../Exports'
+import Stadium from '../../assets/baseball-stadium.jpg'
+import AdOne from '../../assets/ad-1.jpg'
 
-export default class HomeScreen extends Component {
+const HomeScreen = () => {
 
-    constructor(props) {
-        super(props)
+    const [news, setNews] = useState([])
 
-        this.state = {
-            // teamData: [],
-            // teamNames: [],
-            
-            scheduleData: [],
-            homeTeams: []
+    useEffect(() => {
+        getNews()
+        getDate()
+    }, [])
 
-        }
+    getNews = async () => {
+        await axios.get('https://api.sportsdata.io/v3/mlb/scores/json/News?key=df194af6ada54af983b9667771d8aa72')
+        .then(res => {
+            res.data
+
+            setNews(res.data)
+            console.log(news)
+        })
+        .catch(err => console.log("Error getting news: ", err))
+
     }
 
-    // getTeamData = async () => {
-    //     const headers = {
-    //         'Ocp-Apim-Subscription-Key': 'df194af6ada54af983b9667771d8aa72'
-    //     }
-    
-    //     await axios.get("https://fly.sportsdata.io/v3/mlb/scores/json/TeamSeasonStats/%7B2021%7D?key=df194af6ada54af983b9667771d8aa72")
-    //         .then(res => {
-    //             res.data
-    
-    //             const teamData = res.data
-    //             this.setState({ teamData: teamData })
-    //         })
-    //         .catch(err => {
-    //             console.log("There was an error", err)
-    //         })
-    // }
+    getDate = () => {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
 
-    getSchedules = async () => {
-        await axios.get('https://fly.sportsdata.io/v3/mlb/scores/json/Games/2021?key=df194af6ada54af983b9667771d8aa72')
-            .then(res => {
-                res.data
-
-                const scheduleData = res.data
-                this.setState({ scheduleData: scheduleData })
-                // this.setState({ homeTeams: scheduleData.HomeTeam })
-                console.log(scheduleData)
-                
-
-            })
-            .catch(err => {
-                console.log("Error getting schedules: ", err)
-            })
-    }
-    get getSchedules() {
-        return this._getSchedules
-    }
-    set getSchedules(value) {
-        this._getSchedules = value
+        today = mm + '/' + dd + '/' + yyyy;
+        console.log("Today: ", today)
     }
 
-    componentDidMount() {
-        // this.getSchedules()
-    }
 
-    render() {
+
+
         return (
-            <View style={{backgroundColor: 'hotpink'}}>
-                <SportSelector />
-                <View style={{backgroundColor: 'hotpink', flex: 1}}>
-                    <Text>Come the fuck on already.</Text>
+            <>
+            <View style={{backgroundColor: '#161616', flex: 1}}>
+                <Image source={Stadium} style={{height: 200, alignSelf: 'center'}}></Image>
+                <View style={{alignContent: 'center'}}>
+                {/* <Image source={AdOne} style={{height: 100}}></Image> */}
+                <ScrollView style={{backgroundColor: '#161616', width: '100%'}}>
+                {news.map(article => {
+                    return (
+                        <View key={article.NewsID} style={{backgroundColor: '#222', width: '94%', alignSelf: 'center', padding: 20, marginVertical: 8}}>
+                            <Text style={{color: '#fff', fontSize: 20, paddingBottom: 8}}>{article.Title}</Text>
+                            <Text numberOfLines={3} style={{color: '#fff', fontSize: 16}}>{article.Content}</Text>
+                    </View>
+                    )
+                })}
+            
+            </ScrollView>
                 </View>
-                <View style={{backgroundColor: 'hotpink', flex: 1}}>
-                    <Text>Come the fuck on already.</Text>
-                </View>
-                <View style={{backgroundColor: 'hotpink', flex: 1}}>
-                    <Text>Come the fuck on already.</Text>
-                </View>
-                <View style={{backgroundColor: 'hotpink', flex: 1}}>
-                    <Text>Come the fuck on already.</Text>
-                </View>
-                {/* <View style={styles.gameList}>
-                    {this.state.scheduleData.map(scheduleObj => {
-                        return (
-                        <Text>{scheduleObj.HomeTeam}</Text>
-                        )
-                    })}
-                </View> */}
             </View>
+
+            </>
         )
-    }
 }
+
+export default HomeScreen
 
 
 const styles = StyleSheet.create({
@@ -100,5 +74,12 @@ const styles = StyleSheet.create({
         // backgroundColor: 'purple',
         // color: '#fff',
         // width: '100%'
+    },
+    imageContainer: {
+        width: '88%',
+        alignItems: 'center'
+    },
+    whiteText: {
+        color: '#fff'
     }
 })

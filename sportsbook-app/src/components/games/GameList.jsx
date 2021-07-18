@@ -288,7 +288,7 @@ const GameList = (props) => {
                                 <View style={styles.gameList}>
                                 {scheduleData.map((scheduleObj) => {
                                     return (
-                                        <View style={styles.gameListItem}>
+                                        <View style={styles.gameListItem} key={scheduleObj.GameId}>
                                             
                                             <View style={styles.gameListItemRow}>
                                                 <Text style={styles.tealText}>{formatDate(scheduleObj.DateTime)}</Text>
@@ -337,9 +337,8 @@ const GameList = (props) => {
                                 </View> 
 
                             </ScrollView>
-
-                            
                             }
+                                                        <View></View>
                               </>  
 
                         }
@@ -402,9 +401,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 60,
         height: 60,
-        backgroundColor: '#262626',
+        // backgroundColor: '#114880',
         // paddingHorizontal: 20,
-        borderRadius: 4
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor:'#229999'
     },
     tealText: {
         color: 'teal'
@@ -418,8 +419,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 24,
         padding: 20,
-        width: '100%'
-
+        width: '100%',
+        zIndex: -999
     },
 })
 

@@ -8,7 +8,7 @@ const BetSlip = (props) => {
 
     return (
     <View>
-       {/* <PendingBetslip /> */}
+       <Text>Hi</Text>
     </View>
     )
 }
