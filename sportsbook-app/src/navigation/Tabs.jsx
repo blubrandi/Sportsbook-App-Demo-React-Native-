@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator()
 
 const CustomTabBarButton = ({children, onPress}) => (
+
     <TouchableOpacity
     style={{
         top: 10,
@@ -18,7 +19,7 @@ const CustomTabBarButton = ({children, onPress}) => (
             width: 60,
             height: 60,
             borderRadius: 50,
-            backgroundColor: '#4cfa07'
+            backgroundColor: '#161616'
         }}>
             {children}
         </View>
@@ -26,6 +27,10 @@ const CustomTabBarButton = ({children, onPress}) => (
 )
 
 const Tabs = () => {
+
+    const tabIconColor = '#d49e0f'
+    // const tabIconColor = '#999'
+
 
     return (
         <Tab.Navigator
@@ -48,11 +53,11 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                      <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                         <Text>
-                            <Ionicons name='home' size={28} color='#fff' />
+                            <Ionicons name='home' size={28} color={tabIconColor} />
                         </Text>
-                        <Text style={styles.whiteText}>
-                            Home
-                        </Text>
+                        {/* <Text style={styles.whiteText}> */}
+                            {/* Home */}
+                        {/* </Text> */}
                      </View>
                 )  
             }}/>
@@ -60,18 +65,18 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                     <Text>
-                        <Ionicons name='star' size={28} color='#fff' />
+                        <Ionicons name='star' size={28} color={tabIconColor} />
                     </Text>
-                    <Text style={styles.whiteText}>
+                    {/* <Text style={styles.whiteText}>
                         Favorites
-                    </Text>
+                    </Text> */}
                     </View>
                 )
             }}/>         
             <Tab.Screen name="Betslip" component={BetslipScreen} options={{
                 tabBarIcon: ({focused}) => (
                     <Text>
-                        <Ionicons name='receipt' size={40} color='#161616' />
+                        <Ionicons name='receipt' size={40} color={tabIconColor} />
                     </Text>
     
                 ),
@@ -86,11 +91,11 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems :'center', justifyContent: 'center', top: 10}}>
                     <Text>
-                        <Ionicons name='ribbon' size={28} color='#fff' />
+                        <Ionicons name='ribbon' size={28} color={tabIconColor} />
                     </Text>
-                    <Text style={styles.whiteText}>
+                    {/* <Text style={styles.whiteText}>
                         Rewards
-                    </Text>
+                    </Text> */}
                     </View>
                 )   
             }}/>
@@ -99,11 +104,11 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                         <Text>
-                            <Ionicons name='person-circle-sharp' size={28} color='#fff' />
+                            <Ionicons name='person-circle-sharp' size={28} color={tabIconColor} />
                         </Text>
-                        <Text style={styles.whiteText} >
+                        {/* <Text style={styles.whiteText} >
                             Profile
-                        </Text>
+                        </Text> */}
                     </View>
                 )
             }}/>

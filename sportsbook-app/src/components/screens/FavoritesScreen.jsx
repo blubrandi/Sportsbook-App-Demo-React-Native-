@@ -1,9 +1,13 @@
 import React from 'react'
 import { SafeAreaView, View, Text, TextInput, Button, Alert, StyleSheet, ActivityIndicator } from 'react-native'
 
+import { SportSelector } from '../Exports'
+
 const FavoritesScreen = (props) => {
     return (
-        <Text>Favorites Screen</Text>
+        <View style={{backgroundColor: '#161616', flex: 1}}>
+            <SportSelector />
+        </View>
     )
 }
 

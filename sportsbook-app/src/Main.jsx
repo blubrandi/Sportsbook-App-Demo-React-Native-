@@ -21,10 +21,9 @@ export default class Main extends Component {
 
     render() {
         return (
-            <Provider store={store}>
-            <Header />
+            <Provider store={store}>   
                 <NavigationContainer style={styles.darkGreyBackground}>
-                
+                <Header /> 
                     <Tabs />
                 </NavigationContainer>
             </Provider>
