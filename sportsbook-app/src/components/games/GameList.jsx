@@ -1,6 +1,7 @@
 import React, { useEffect, setState, useState, useInterval, Component } from 'react'
 import axios from 'axios'
-import { Button, Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Button, Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 import Modal from "react-native-modal";
 
 import Bet from '../bets/Bet'
@@ -9,11 +10,6 @@ import { useDispatch } from 'react-redux'
 
 import { pendingBetAdded } from '../bets/betsSlice' 
 import PendingBetslip from '../bets/PendingBetslip'
-import { render } from 'react-dom'
-
-// import * as All from '../../assets/team-logos'
-
-// import Game from './Game '
 
 const GameList = (props) => {
 
@@ -48,8 +44,8 @@ const GameList = (props) => {
     }
 
     formatDate = (date) => {
-        let formattedDate = new Date(Date.parse(date)).toString()
-        return formattedDate
+        // let formattedDate = new Date(Date.parse(date)).toString()
+        // return formattedDate
     }
 
     imageSelect = (teamName) => {
@@ -196,42 +192,68 @@ const GameList = (props) => {
         return nanoid(6)
     }
 
-    createMoneyLine = (props) => {
-
-        // console.log("PROPS: ", props)
+    createSingleBet = (props, singleBetType) => {
 
         let gameID = props.GameId
-        
         let betID = nanoid(6)
-        let awayTeamName = formatTeamName(props.AwayTeamName)
-        let homeTeamName = formatTeamName(props.HomeTeamName)
-        let betType = 'moneyLine'
-        let homeMoneyLine = props.AlternateMarketPregameOdds[0].HomeMoneyLine
-        let awayMoneyLine = props.AlternateMarketPregameOdds[0].AwayMoneyLine
-        // // let homePointSpread = props.homePointSpread
-        // // let awayPointSpread = props.awayPointSpread
-        // // let homePointSpreadPayout = props.homePointSpreadPayout
-        // // let awayPointSpreadPayout = props.awayPointSpreadPayout
-        // // let overUnder = props.overUnder
-        // // let overPayout = props.overPayout
-        // // let underPayout = props.underPayout
-        // let wager = props.wager
-        // let potentialWinnings = props.potentialWinnings
-        // let potentialPayout = props.potentialPayout
+        let betOdds
+        let payout
+        let teamName
+        let betType
+        let awayTeam = formatTeamName(props.AwayTeamName)
+        let homeTeam = formatTeamName(props.HomeTeamName)
+        let gameTeams = `${awayTeam} vs ${homeTeam}`
 
-        // let y = 20
-        // let a = (y * Math.abs(props/100)) + y
-        
-        // console.log("Bet: ", y, "Profit: ", Math.round(a - y), "Payout: ", a)
-        // console.log(props)
+        // let awayTeamName = formatTeamName(props.AwayTeamName)
+        // let homeTeamName = formatTeamName(props.HomeTeamName)
+        let betPending = true
 
-        let newBet = Bet({gameID, betID, betType, homeMoneyLine, awayMoneyLine, awayTeamName, homeTeamName})
-        // console.log("NEW BET: ", newBet)
-        // console.log("From function: ", props.scheduleObj)
+        // let newBet
+
+        switch (singleBetType) {
+            case 'awayMoneyLine':
+                betType = 'Money Line'
+                teamName = formatTeamName(props.AwayTeamName)
+                betOdds = props.AlternateMarketPregameOdds[0].AwayMoneyLine
+                payout = props.AlternateMarketPregameOdds[0].AwayMoneyLine
+                break
+
+            case 'homeMoneyLine':
+                betType = 'Money Line'
+                teamName = formatTeamName(props.HomeTeamName)
+                betOdds = props.AlternateMarketPregameOdds[0].HomeMoneyLine
+                payout = props.AlternateMarketPregameOdds[0].HomeMoneyLine
+                break
+
+            case 'awaySpreadPayout':
+                betType = 'Spread'
+                teamName = formatTeamName(props.AwayTeamName)
+                betOdds = props.AlternateMarketPregameOdds[0].AwayPointSpread
+                payout = props.AlternateMarketPregameOdds[0].AwayPointSpreadPayout
+                break
+
+            case 'homeSpreadPayout':
+                betType = 'Spread'
+                teamName = formatTeamName(props.HomeTeamName)
+                betOdds = props.AlternateMarketPregameOdds[0].HomePointSpread
+                payout = props.AlternateMarketPregameOdds[0].HomePointSpreadPayout
+                break
+
+            case 'underPayout':
+                betType = 'Totals'
+                betOdds = 
+                payout = props.AlternateMarketPregameOdds[0].UnderPayout
+                break
+            case 'overPayout':
+                betType = 'Totals'
+                payout = props.AlternateMarketPregameOdds[0].OverPayout
+                break
+        }
+
+        let newBet = Bet({gameID, betID, betType, teamName, betOdds, payout, betPending, gameTeams})
 
         dispatch(pendingBetAdded(newBet))
         toggleModal()
-        // dispatch(setShowModal(true))
 
         return newBet
     }
@@ -243,7 +265,10 @@ const GameList = (props) => {
             <>
                     {selectedLeague == "MLB" && 
                         isLoading ?
-                            <Text>Generating Game Data...</Text> :
+                            // <Text>Generating Game Data...</Text> :
+                            <View style={styles.loader}>
+                            <ActivityIndicator size="large" style={{marginTop: '45%'}} />
+                            </View> :
                                 <>
                             {showModal ?
                                 // <View style={{backgroundColor: 'khaki'}}> 
@@ -273,17 +298,30 @@ const GameList = (props) => {
                                     onRequestClose={() => {
                                         Alert.alert('Modal has been closed.');
                                     }}>
-                                        <View style={{backgroundColor: '#161616', height: '60%', borderRadius: 24, justifyContent: 'flex-end'}}>
-                                <ScrollView contentContainerStyle={styles.modalScrollView}>
-                                    <View style={{}}>
-                                <PendingBetslip />
-                                </View>
-                                </ScrollView>
-                                <Button title={'Press Me'}>Press Me</Button>
-                                </View>
-                                </Modal> 
+                                        <View style={{backgroundColor: '#161616', height: '70%', borderRadius: 24, justifyContent: 'flex-end'}}>
+                                            <Text style={{color: '#fff', fontSize: 24, textAlign: 'center', marginVertical: 8}}>Pending Bets</Text>
+                                            <ScrollView contentContainerStyle={styles.modalScrollView}>
+                                                <View style={{}}>
+                                            <PendingBetslip />
+                                            </View>
+                                            </ScrollView>
+                                            <Button title={'Press Me'}>Press Me</Button>
+                                            </View>
+                                            </Modal> 
                                 // </View>
                              :
+                                <>
+                                <LinearGradient 
+                                    colors={['#d02e42', '#b60437']}
+                                    start={[0, 1]}
+                                    end={[1, 0]}
+                                    style={styles.gameListHeader}>
+                                <View style={styles.gameListHeaderItems}>
+                                    <Text style={styles.gameListHeaderItem}>SPREAD</Text>
+                                    <Text style={styles.gameListHeaderItem}>MONEY</Text>
+                                    <Text style={styles.gameListHeaderItem}>TOTAL</Text>
+                                </View>
+                                </LinearGradient>
                                 <ScrollView>
                                 <View style={styles.gameList}>
                                 {scheduleData.map((scheduleObj) => {
@@ -291,24 +329,27 @@ const GameList = (props) => {
                                         <View style={styles.gameListItem} key={scheduleObj.GameId}>
                                             
                                             <View style={styles.gameListItemRow}>
+                                            <Text style={styles.headerText}>{formatTeamName(scheduleObj.AwayTeamName)} vs {formatTeamName(scheduleObj.HomeTeamName)}</Text>
+                                            {/* <Text>{formatTeamName(scheduleObj.HomeTeamName)}</Text> */}
                                                 <Text style={styles.tealText}>{formatDate(scheduleObj.DateTime)}</Text>
-                                                <Text style={styles.lightText}>{scheduleObj.Name}</Text>
+                                                
                                             </View>
 
                                             <View style={styles.gameListItemRow}>
                                             <View style={styles.teamInfo}>
                                             <Image style={styles.gameListTeamLogo} source={imageSelect(scheduleObj.AwayTeamName)}></Image>
-                                            {/* <Text style={styles.lightText}>{this.formatTeamName(scheduleObj.HomeTeam)}</Text> */}
                                             </View>
                                             <View style={styles.betInfo}>
                                                 <View style={styles.betBox}>
-                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpread}</Text>
+                                                    <Text style={styles.tealText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpread}</Text>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpreadPayout}</Text>
                                                     </View>
-                                                <TouchableOpacity onPress={() => createMoneyLine(scheduleObj)} style={styles.betBox}>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "awayMoneyLine")} style={styles.betBox}>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayMoneyLine}</Text>
                                                     </TouchableOpacity>
                                                 <View style={styles.betBox}>
-                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpreadPayout}</Text>
+                                                    <Text style={styles.tealText}>O</Text>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].OverPayout}</Text>
                                                     </View>
                                             </View>
                                             </View>
@@ -320,15 +361,21 @@ const GameList = (props) => {
                                             </View>
                                             <View style={styles.betInfo}>
                                                 <View style={styles.betBox}>
-                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpread}</Text>
-                                                    </View>
-                                                <TouchableOpacity onPress={() => createMoneyLine(scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine)} style={styles.betBox}>
-                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine}</Text>
-                                                    </TouchableOpacity>
-                                                <View style={styles.betBox}>
+                                                    <Text style={styles.tealText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpread}</Text>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpreadPayout}</Text>
                                                     </View>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "homeMoneyLine")} style={styles.betBox}>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine}</Text>
+                                                </TouchableOpacity>
+                                                <View style={styles.betBox}>
+                                                <Text style={styles.tealText}>U</Text>
+                                                    <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].UnderPayout}</Text>
+                                                    </View>
                                             </View>
+                                            </View>
+                                            <View style={styles.moreBetsContainer}>
+                                                <TouchableOpacity style={styles.moreBetsButton}>
+                                                    <Text style={{textAlign: 'center', color: '#fff', fontSize: 16 }}>+ Bets</Text></TouchableOpacity>
                                             </View>
                                         </View>
                                         )
@@ -337,8 +384,8 @@ const GameList = (props) => {
                                 </View> 
 
                             </ScrollView>
+                            </>
                             }
-                                                        <View></View>
                               </>  
 
                         }
@@ -351,11 +398,33 @@ export default GameList
 
 const styles = StyleSheet.create({
     container: {
-        padding: 25,
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
+    padding: 25,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    },
+    loader: {
+    flex: 1,
+    alignContent: 'center'
+    },
+    gameListHeader: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        backgroundColor: '#d02e42'
+    },
+    gameListHeaderItems: {
+        flexDirection: 'row',
+        width: '68%',
+        justifyContent: 'space-around',
+        paddingRight: 10,
+        marginVertical: 10
+    },
+    gameListHeaderItem: {
+        color: '#dfdfdf',
+        fontWeight: '700',
+        paddingHorizontal: 14,
+        fontSize: 14,
+    },
     gameList: {
         flexGrow: 1,
         backgroundColor: '#161616',
@@ -383,7 +452,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 2,
+        marginVertical: 4
     },
+    headerText: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#dfdfdf',
+        textAlign: 'center'
+    },  
     teamInfo: {
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -401,11 +477,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: 60,
         height: 60,
-        // backgroundColor: '#114880',
+        backgroundColor: '#1e1e1e',
         // paddingHorizontal: 20,
         borderRadius: 4,
-        borderWidth: 1,
-        borderColor:'#229999'
+        // borderWidth: 1,
+        // borderColor:'#229999'
+        shadowColor: "#000", 
+        shadowOffset:{ 
+        width: 0, 
+        height: 3, 
+        }, 
+        shadowOpacity: 0.27, 
+        shadowRadius: 4.65, 
+        elevation: 6,
     },
     tealText: {
         color: 'teal'
@@ -422,13 +506,24 @@ const styles = StyleSheet.create({
         width: '100%',
         zIndex: -999
     },
+    moreBetsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingRight: 18,
+    },
+    moreBetsButton: {
+        width: '20%', 
+        backgroundColor: '#3471c3', 
+        padding: 8, 
+        borderRadius: 4,
+        marginVertical: 10, 
+        shadowColor: "#000", 
+        shadowOffset:{ 
+        width: 0, 
+        height: 3, 
+        }, 
+        shadowOpacity: 0.27, 
+        shadowRadius: 4.65, 
+        elevation: 6,
+    }
 })
-
-// const mapStateToProps = ({ pendingBetAdded }) => ({
-//     pendingBetAdded
-//   });
-  
-//   export default connect(
-//     mapStateToProps,
-//     { pendingBetAdded }
-//   )(GameList);

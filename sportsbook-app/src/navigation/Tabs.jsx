@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Game, GameList, SportSelector, Team, HomeScreen, ProfileScreen, RewardsScreen, BetslipScreen, FavoritesScreen } from '../components/Exports'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator()
 
@@ -28,7 +29,7 @@ const CustomTabBarButton = ({children, onPress}) => (
 
 const Tabs = () => {
 
-    const tabIconColor = '#d49e0f'
+    const tabIconColor = '#d49e0e'
     // const tabIconColor = '#999'
 
 
@@ -65,7 +66,8 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center', top: 10}}>
                     <Text>
-                        <Ionicons name='star' size={28} color={tabIconColor} />
+                        {/* <Ionicons name='star' size={28} color={tabIconColor} /> */}
+                        <FontAwesome name="trophy" size={28} color={tabIconColor} />
                     </Text>
                     {/* <Text style={styles.whiteText}>
                         Favorites
@@ -120,14 +122,14 @@ const Tabs = () => {
 
 const styles = StyleSheet.create({
     shadow: {
-        shadowColor: '#7f5df0',
-        shadowOffset: {
-            width: 0,
-            height: 10
-        },
-        shadowOpacity: 0.24,
-        shadowRadius: 3.6,
-        elevation: 5
+        shadowColor: "#000", 
+        shadowOffset:{ 
+        width: 0, 
+        height: 3, 
+        }, 
+        shadowOpacity: 0.27, 
+        shadowRadius: 4.65, 
+        elevation: 6,
     },
     whiteText: {
         color: '#fff',
