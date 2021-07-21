@@ -9,7 +9,7 @@ import { HomeScreen } from '../screens'
 
 const SportSelector = () => {
 
-    const activeColor = "#fff"
+    const activeColor = "#d49e0e"
     const inactiveColor = "purple"
 
     const [selectedSport, setSelectedSport] = useState('')
@@ -84,43 +84,6 @@ const SportSelector = () => {
         console.log(isActive)
     }
 
-    // const [schedules, setSchedules] = useState([
-    //     // schedules: []
-    // ])
-
-    // useEffect(() => {
-    //     getSchedules()
-    // }, [])
-
-    // const getSchedules = async () => {
-    //     await axios.get('https://fly.sportsdata.io/v3/mlb/scores/json/Games/2021?key=df194af6ada54af983b9667771d8aa72')
-    //     .then(res => {
-
-    //         res.data
-
-    //         const scheduleData = res.data
-    //         setSchedules(scheduleData)
-    //         console.log(schedules)
-    //     })
-    //     .catch(err => console.log("Error getting schedules: ", err))
-    // }
-
-    // function handleIconColorChange(props) {
-
-    //     if (props == selectedSport) {
-    //         setActive(props)
-    //         console.log("Props!", props)
-    //     }
-    //     console.log(props)
-    //     // setIconColor('#fff') ? setIconColor('purple') : 
-
-    // }
-
-    // onpress turns the icon white: activeColor, inactiveColor
-    // if the icon is white, no other elements in the array can have a white icon
-    // search the elements in the array to see if their icon is white
-    // if it's white, turn it back to grey
-
     return (
         <>
         <View>
@@ -129,6 +92,7 @@ const SportSelector = () => {
                  {sportIcons}
                 
             </ScrollView>
+            <View style={styles.leagueSelectBackground}>
             <ScrollView contentContainerStyle={styles.leagueSelectContainer} horizontal={true}>
                 {selectedSport == "baseball" &&
                     baseBallLeagues.map((baseballLeague) => {
@@ -183,6 +147,7 @@ const SportSelector = () => {
                 }
                 
             </ScrollView>
+            </View>
         </View>
         <View>
             {selectedLeague == "MLB" &&
@@ -208,9 +173,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 100,
         height: 90
     },
+    leagueSelectBackground: {
+        backgroundColor: '#222'
+    },
     leagueSelectContainer: {
         flexGrow: 1,
-        backgroundColor: '#262626',
+        backgroundColor: '#222',
         justifyContent: 'space-around',
         alignItems: 'center',
         paddingHorizontal: 10,
@@ -221,7 +189,8 @@ const styles = StyleSheet.create({
         padding: 0, 
     },
     leagueNames: {
-        color: '#fff',
+        color: '#797979',
+        fontSize: 18,
         height: 40,
     },
     iconPadding: {
