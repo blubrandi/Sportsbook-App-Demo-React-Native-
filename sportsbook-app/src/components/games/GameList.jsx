@@ -1,6 +1,6 @@
 import React, { useEffect, setState, useState, useInterval, Component } from 'react'
 import axios from 'axios'
-import { ActivityIndicator, Button, Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
+import { ImageBackground, ActivityIndicator, Button, Image, StyleSheet, ScrollView, TouchableOpacity, Text, TextInput, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import Modal from "react-native-modal";
 
@@ -241,11 +241,14 @@ const GameList = (props) => {
 
             case 'underPayout':
                 betType = 'Totals'
-                betOdds = 
+                teamName = 'Under Totals'
+                betOdds = props.AlternateMarketPregameOdds[0].OverUnder
                 payout = props.AlternateMarketPregameOdds[0].UnderPayout
                 break
             case 'overPayout':
                 betType = 'Totals'
+                teamName = 'Over Totals'
+                betOdds = props.AlternateMarketPregameOdds[0].OverUnder
                 payout = props.AlternateMarketPregameOdds[0].OverPayout
                 break
         }
@@ -305,7 +308,6 @@ const GameList = (props) => {
                                             <PendingBetslip />
                                             </View>
                                             </ScrollView>
-                                            <Button title={'Press Me'}>Press Me</Button>
                                             </View>
                                             </Modal> 
                                 // </View>
@@ -341,16 +343,21 @@ const GameList = (props) => {
                                             </View>
                                             <View style={styles.betInfo}>
                                                 <View style={styles.betBox}>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "awaySpreadPayout")} style={styles.betBox}>
                                                     <Text style={styles.tealText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpread}</Text>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayPointSpreadPayout}</Text>
+                                                    </TouchableOpacity>
                                                     </View>
                                                 <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "awayMoneyLine")} style={styles.betBox}>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].AwayMoneyLine}</Text>
                                                     </TouchableOpacity>
                                                 <View style={styles.betBox}>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "overPayout")} style={styles.betBox}>
                                                     <Text style={styles.tealText}>O</Text>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].OverPayout}</Text>
+                                                    </TouchableOpacity>
                                                     </View>
+                                                   
                                             </View>
                                             </View>
 
@@ -361,15 +368,19 @@ const GameList = (props) => {
                                             </View>
                                             <View style={styles.betInfo}>
                                                 <View style={styles.betBox}>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "homeSpreadPayout")} style={styles.betBox}>
                                                     <Text style={styles.tealText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpread}</Text>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomePointSpreadPayout}</Text>
+                                                    </TouchableOpacity>
                                                     </View>
                                                 <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "homeMoneyLine")} style={styles.betBox}>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].HomeMoneyLine}</Text>
                                                 </TouchableOpacity>
                                                 <View style={styles.betBox}>
+                                                <TouchableOpacity onPress={() => createSingleBet(scheduleObj, "underPayout")} style={styles.betBox}>
                                                 <Text style={styles.tealText}>U</Text>
                                                     <Text style={styles.lightText}>{scheduleObj.AlternateMarketPregameOdds[0].UnderPayout}</Text>
+                                                    </TouchableOpacity>
                                                     </View>
                                             </View>
                                             </View>
@@ -389,7 +400,6 @@ const GameList = (props) => {
                               </>  
 
                         }
-
             </> 
         )     
 }

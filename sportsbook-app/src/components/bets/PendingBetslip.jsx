@@ -101,15 +101,22 @@ const PendingBetslip = (props) => {
                 <Text style={{color: '#dfdfdf', fontSize: 14}}>{bet.gameTeams}</Text>
             <Text style={{color: '#fff'}}>{bet.awayMoneyLine}</Text>
             </View>
+            <View style={styles.textRow}>
+            <View style={{}}>
+        <Text style={{color: '#fff'}}>Enter</Text>
+        <Text style={{color: '#fff'}}>Amount</Text>
+        </View>
+        <TextInput style={styles.input} keyboardType="numeric" onChangeText={setWager} placeHolder="Bet Amount"></TextInput>
+        </View>
             {/* <Text style={{color: '#fff'}}>{wager}</Text> */}
-            <TextInput style={styles.input} keyboardType="numeric" onChangeText={setWager}></TextInput>
-            <View style={styles.quickBets}>
+            {/* <TextInput style={styles.input} keyboardType="numeric" onChangeText={setWager}></TextInput> */}
+            {/* <View style={styles.quickBets}>
                 <TouchableOpacity style={styles.quickBet}><Text style={{color: '#fff'}}>CLR</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 5)}}><Text style={{color: '#fff'}}>$5</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 10)}}><Text style={{color: '#fff'}}>$10</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 20)}}><Text style={{color: '#fff'}}>$20</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 100)}}><Text style={{color: '#fff'}}>$50</Text></TouchableOpacity>
-            </View>
+            </View> */}
             {currentCalculatedBet.id == bet.betID &&
             <Text style={{color: '#fff'}}>
             {currentCalculatedBet.calculatedBet}
@@ -186,5 +193,10 @@ const styles=StyleSheet.create({
       deleteBet: {
           paddingTop: 8,
           marginTop: 8
-      }
+      },
+      textRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    }
 })

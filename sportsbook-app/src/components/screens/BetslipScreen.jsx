@@ -46,6 +46,8 @@ const BetslipScreen = (props) => {
             a = (y * Math.abs(props.awayMoneyLine/100)) + parseInt(y)
         }
 
+        // console.log("Bet: ", y, "Profit: ", Math.round(parseInt(a) - parseInt(y)), "Payout: ", a)
+
         handleTapPlaceBet(betID)
 
     }
@@ -53,9 +55,10 @@ const BetslipScreen = (props) => {
     handleTapPlaceBet = (props) => {
         console.log("HANDLE PROPS: ", props)
         let focusedBet = pendingBets.find(element => element.betID == props)
-        
+        // focusedBet.betWager = wager
         // dispatch(pendingBetRemoved(focusedBet))
         dispatch(betStatusChanged(focusedBet))
+        alert("Bet Placed!")
         console.log("FOCUSED BET: ", focusedBet)
     }
 
@@ -122,13 +125,14 @@ const BetslipScreen = (props) => {
         <Text style={{color: '#fff'}}>{bet.awayMoneyLine}</Text>
         </View>
         {/* <Text style={{color: '#fff'}}>{wager}</Text> */}
-        <TextInput style={styles.input} keyboardType="numeric" onChangeText={setWager}></TextInput>
+        <View style={styles.textRow}>
+            <View style={{}}>
+        <Text style={{color: '#fff'}}>Enter</Text>
+        <Text style={{color: '#fff'}}>Amount</Text>
+        </View>
+        <TextInput style={styles.input} keyboardType="numeric" onChangeText={setWager} placeHolder="Bet Amount"></TextInput>
+        </View>
         <View style={styles.quickBets}>
-            <TouchableOpacity style={styles.quickBet}><Text style={{color: '#fff'}}>CLR</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 5)}}><Text style={{color: '#fff'}}>$5</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 10)}}><Text style={{color: '#fff'}}>$10</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 20)}}><Text style={{color: '#fff'}}>$20</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.quickBet} onPress={() => {calculateThisBet(bet.betID, 100)}}><Text style={{color: '#fff'}}>$50</Text></TouchableOpacity>
         </View>
         {currentCalculatedBet.id == bet.betID &&
         <Text style={{color: '#fff'}}>
@@ -167,6 +171,7 @@ const BetslipScreen = (props) => {
 
     return (
         <>
+
         <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.headerButton} onPress={() => {showPendingBets()}}>
             <Text style={{color: '#fff'}}>Pending Bets</Text>
@@ -178,6 +183,7 @@ const BetslipScreen = (props) => {
 
         <ScrollView style={{backgroundColor: '#161616'}}>
 
+            <View>
             { shouldShowPendingBets ?
                 <View>
                     {filteredPendingBets}
@@ -186,7 +192,10 @@ const BetslipScreen = (props) => {
                 <View>
                 {filteredPlacedBets}
                 </View>
-            }
+            }   
+            </View>
+
+
 
 
         </ScrollView>
@@ -261,5 +270,10 @@ const styles = StyleSheet.create({
       deleteBet: {
           paddingTop: 8,
           marginTop: 8
+      },
+      textRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+
       }
 })
